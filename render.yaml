@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: lux-qr-system
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --access-logfile - app:app
+    healthCheckPath: /health
+    numInstances: 1
+    envVars:
+      - key: LUX_QR_DATA_DIR
+        value: /var/data
+      # Optional: set only when using a custom HTTPS domain.
+      # app.py automatically uses Render RENDER_EXTERNAL_URL otherwise.
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+    disk:
+      name: lux-qr-data
+      mountPath: /var/data
+      sizeGB: 1

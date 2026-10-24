@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+lux_qr.db
+uploads/*
+!uploads/.gitkeep
+static/qr/*
+!static/qr/.gitkeep
+.env

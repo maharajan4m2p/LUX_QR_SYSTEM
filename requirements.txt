@@ -1,0 +1,7 @@
+Flask>=3.0,<4
+pandas>=2.0,<3
+openpyxl>=3.1,<4
+xlrd>=2.0,<3
+qrcode[pil]>=7.4,<9
+Werkzeug>=3.0,<4
+gunicorn>=23,<24
