@@ -341,7 +341,6 @@ def create_qr(qr_id, base_url=None, data=None):
     return filename
 
 
-```python
 def location_qr_data(row):
     """Convert a database location record into QR display data."""
 
@@ -365,7 +364,6 @@ def location_qr_data(row):
         "NEXT_DUE_DATE": get_value("next_due_date"),
         "VERIFIED": get_value("verified"),
     }
-```
 def regenerate_all_qr_codes(base_url=None):
     """Rebuild existing QR PNGs with the same permanent QR IDs.
 
@@ -380,7 +378,7 @@ def regenerate_all_qr_codes(base_url=None):
             "SELECT qr_id, qr_filename FROM locations WHERE active=1 ORDER BY id"
         ).fetchall()
         for row in rows:
-            create_qr(row["qr_id"], base_url, location_qr_data(row))
+            create_qr(row["qr_id"], base_url)
     finally:
         conn.close()
     return len(rows)
