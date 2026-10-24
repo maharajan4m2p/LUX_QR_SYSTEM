@@ -344,7 +344,7 @@ def create_qr(qr_id, base_url=None, data=None):
 def location_qr_data(row):
     return {
         "QR_ID": row["qr_id"],
-        "S_NO": row["sno"],
+        "S_NO": row["s_no"] if "s_no" in row.keys() else row["S_NO"] if "S_NO" in row.keys() else row["sno"] if "sno" in row.keys() else row["id"],
         "DEPARTMENT": row["department"],
         "CHECKING_AREA": row["checking_area"],
         "LUX_REQUIRED": row["lux_req"],
