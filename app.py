@@ -35,6 +35,14 @@ app.secret_key = os.environ.get("SECRET_KEY", "lux-qr-system-local-secret")
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
 
 UPLOAD_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+if QR_DIR.exists() and not QR_DIR.is_dir():
+    raise RuntimeError(
+        f"QR path exists but is not a directory: {QR_DIR}. "
+        "Remove or rename the conflicting file."
+    )
+
 QR_DIR.mkdir(parents=True, exist_ok=True)
 
 
