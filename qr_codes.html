@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Permanent QR Codes{% endblock %}
+{% block content %}
+<div class="card">
+<h2>🖨️ Permanent QR Codes ({{ locations|length }})</h2>
+<p>Print these once and attach them to the corresponding checking locations. Monthly Excel uploads update the data behind the same QR.</p>
+<button onclick="window.print()">🖨️ Print All</button>
+{% if public_base_url %}
+<form method="post" action="{{ url_for('regenerate_qr_route') }}" style="display:inline;margin-left:8px">
+<button type="submit">🔄 Regenerate Permanent QR Codes</button>
+</form>
+<p class="muted">QR destination: <b>{{ public_base_url or "Local testing address" }}</b>. For scanning from any mobile anywhere, use the deployed HTTPS address.</p>
+{% else %}
+<p class="muted">Set <b>PUBLIC_BASE_URL</b> to your public HTTPS domain before printing QR codes.</p>
+{% endif %}
+</div>
+<div class="qr-grid">
+{% for x in locations %}
+<div class="qr-card">
+<img src="{{ url_for('qr_file',filename=x.qr_filename, v=x.updated_at) }}" alt="{{ x.qr_id }}">
+<h3>{{ x.qr_id }}</h3>
+<p><b>{{ x.department }}</b><br>{{ x.checking_area }}</p>
+<p>S.No: {{ x.sno }}</p>
+<a class="btn" href="{{ url_for('scan',qr_id=x.qr_id) }}">Open QR</a>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
