@@ -341,19 +341,31 @@ def create_qr(qr_id, base_url=None, data=None):
     return filename
 
 
+```python
 def location_qr_data(row):
-    return {
-        "QR_ID": row["qr_id"],
-        "S_NO": row["s_no"] if "s_no" in row.keys() else row["S_NO"] if "S_NO" in row.keys() else row["sno"] if "sno" in row.keys() else row["id"],
-        "DEPARTMENT": row["department"],
-        "CHECKING_AREA": row["checking_area"],
-        "LUX_REQUIRED": row["lux_req"],
-        "LUX_READING": row["lux_reading"],
-        "CHECKED_DATE": row["checked_date"],
-        "NEXT_DUE_DATE": row["next_due_date"],
-        "VERIFIED": row["verified"],
-    }
+    """Convert a database location record into QR display data."""
 
+    keys = row.keys()
+
+    def get_value(*names, default=""):
+        for name in names:
+            if name in keys:
+                value = row[name]
+                return default if value is None else value
+        return default
+
+    return {
+        "QR_ID": get_value("qr_id"),
+        "S_NO": get_value("sno", "s_no", "S_NO", "id"),
+        "DEPARTMENT": get_value("department"),
+        "CHECKING_AREA": get_value("checking_area"),
+        "LUX_REQUIRED": get_value("lux_req"),
+        "LUX_READING": get_value("lux_reading"),
+        "CHECKED_DATE": get_value("checked_date"),
+        "NEXT_DUE_DATE": get_value("next_due_date"),
+        "VERIFIED": get_value("verified"),
+    }
+```
 def regenerate_all_qr_codes(base_url=None):
     """Rebuild existing QR PNGs with the same permanent QR IDs.
 
